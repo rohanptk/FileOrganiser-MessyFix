@@ -1,0 +1,44 @@
+<Window x:Class="App.MainWindow"
+        xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+        xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+        Title="Downloads Organiser" Height="640" Width="1100" WindowStartupLocation="CenterScreen">
+    <DockPanel Margin="8">
+        <WrapPanel DockPanel.Dock="Top" Margin="0,0,0,8">
+            <Button Content="Refresh" Click="Refresh_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button x:Name="AcceptAllButton" Content="Move all ≥ 90%" Click="AcceptAll_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button Content="Undo last move" Click="Undo_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button Content="Archive a term…" Click="Archive_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button Content="Edit memory / settings" Click="OpenMemory_Click" Padding="10,4" Margin="0,0,16,0"/>
+            <CheckBox x:Name="AutoMoveBox" Content="Auto-move new downloads when sure" VerticalAlignment="Center" Margin="0,0,12,0" Click="AutoMove_Click"/>
+            <CheckBox x:Name="StartupBox" Content="Start with Windows" VerticalAlignment="Center" Click="Startup_Click"/>
+        </WrapPanel>
+
+        <WrapPanel DockPanel.Dock="Bottom" Margin="0,8,0,0">
+            <Button Content="Move  [Enter]" Click="Move_Click" Padding="10,4" Margin="0,0,6,0" FontWeight="Bold"/>
+            <Button Content="Browse…  [F]" Click="Browse_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button Content="Always send files like this here  [A]" Click="Rule_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button Content="Skip  [S]" Click="Skip_Click" Padding="10,4" Margin="0,0,6,0"/>
+            <Button Content="Recycle  [Del]" Click="Recycle_Click" Padding="10,4" Margin="0,0,16,0"/>
+            <TextBlock x:Name="Status" VerticalAlignment="Center" TextWrapping="Wrap"/>
+        </WrapPanel>
+
+        <TextBlock DockPanel.Dock="Top" Foreground="Gray" Margin="0,0,0,6" TextWrapping="Wrap"
+                   Text="Pick a row, check the destination (type, pick 1–3, or Browse), press Enter. Every move teaches the app. Nothing is ever overwritten or deleted; Undo puts files back."/>
+
+        <DataGrid x:Name="Grid" AutoGenerateColumns="False" CanUserAddRows="False" SelectionMode="Extended"
+                  HeadersVisibility="Column" PreviewKeyDown="Grid_PreviewKeyDown" MouseDoubleClick="Grid_DoubleClick">
+            <DataGrid.Columns>
+                <DataGridTextColumn Header="File" Binding="{Binding Name}" IsReadOnly="True" Width="2*"/>
+                <DataGridTextColumn Header="Sure" Binding="{Binding Sure}" IsReadOnly="True" Width="55"/>
+                <DataGridTemplateColumn Header="Move to (folder inside Downloads)" Width="3*">
+                    <DataGridTemplateColumn.CellTemplate>
+                        <DataTemplate>
+                            <ComboBox IsEditable="True" ItemsSource="{Binding Options}"
+                                      Text="{Binding Target, Mode=TwoWay, UpdateSourceTrigger=PropertyChanged}"/>
+                        </DataTemplate>
+                    </DataGridTemplateColumn.CellTemplate>
+                </DataGridTemplateColumn>
+            </DataGrid.Columns>
+        </DataGrid>
+    </DockPanel>
+</Window>
